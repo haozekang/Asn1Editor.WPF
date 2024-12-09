@@ -98,10 +98,11 @@ class MainWindowVM : ViewModelBase, IMainWindowVM, IHasAsnDocumentTabs {
     async Task createTabFromFile(String file, Boolean useSelectedTab = false) 
     {
         Asn1DocumentVM tab;
-        if (useSelectedTab && Tabs.Any()) {
-            tab = selectedTab;
-            tab.Path = file;
+        if (useDefaultTab && Tabs.Any()) {
+            tab = Tabs[0];
         } else {
+            // force set 'useDefaultTab' to 'false' if default tab is requested, but there are no any available tabs.
+            useDefaultTab = false;
             tab = new Asn1DocumentVM(NodeViewOptions, TreeCommands) {
                 Path = file
             };
@@ -113,8 +114,7 @@ class MainWindowVM : ViewModelBase, IMainWindowVM, IHasAsnDocumentTabs {
             Tools.MsgBox("Read Error", ex.Message);
             return;
         }
-        if (!useSelectedTab)
-        {
+        if (!useDefaultTab) {
             addTabToList(tab);
         }
     }
