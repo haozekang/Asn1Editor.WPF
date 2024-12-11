@@ -100,6 +100,7 @@ class MainWindowVM : ViewModelBase, IMainWindowVM, IHasAsnDocumentTabs {
         Asn1DocumentVM tab;
         if (useDefaultTab && Tabs.Any()) {
             tab = Tabs[0];
+            tab.Path = file;
         } else {
             // force set 'useDefaultTab' to 'false' if default tab is requested, but there are no any available tabs.
             useDefaultTab = false;
